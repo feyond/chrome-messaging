@@ -28,7 +28,7 @@ export class MessageRouter<T extends BackgroundTarget | ContentTarget> {
 	}
 
 	match(message: ChromeRequest<T>) {
-		if (!message.target || !message.payload || !message.source) return false;
+		if (!message.target || !message.payload || !message.from) return false;
 		return this.factory.validate(message);
 	}
 
@@ -47,10 +47,10 @@ export class MessageRouter<T extends BackgroundTarget | ContentTarget> {
 	}
 
 	transform(message: ChromeRequest<T>, sender: chrome.runtime.MessageSender): ChromeRequest<T> {
-		if (message.source.location === Location.Content) {
+		if (message.from === Location.Content) {
 			return {
 				...message,
-				source: { location: Location.Content, tabId: sender.tab!.id! },
+				tabId: sender.tab!.id!
 			};
 		}
 		return message;

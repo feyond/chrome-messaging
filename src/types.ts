@@ -6,38 +6,30 @@ export type PromiseFunctionReturnConverter<T> = {
 export enum Location {
 	Background,
 	Content,
-	Popup,
 	Devtools,
-	IFrame,
-	External,
+	// Popup,
+	// Options,
+	// IFrame,
+	// External,
 }
-export interface FromBackground {
-	readonly location: Location.Background;
-}
-export interface FromContent {
-	readonly location: Location.Content;
-	readonly tabId: number;
-}
-export interface FromPopup {
-	readonly location: Location.Popup;
-}
-export interface FromDevtools {
-	readonly location: Location.Devtools;
-	readonly tabId: number;
-}
-
-export type Source = FromBackground | FromContent | FromPopup | FromDevtools;
 
 export interface Payload {
 	fn: string;
 	args: any[];
 }
 
-export interface ChromeRequest<T extends BackgroundTarget | ContentTarget> {
-	payload: Payload;
-	source: Source;
-	target: T;
-}
+export type ChromeRequest<T extends BackgroundTarget | ContentTarget> =
+	| {
+			payload: Payload;
+			from: Location.Content | Location.Devtools;
+			tabId: number;
+			target: T;
+	  }
+	| {
+			payload: Payload;
+			from: Location.Background;
+			target: T;
+	  };
 
 export type ChromeResponse = SuccessResponse | ErrorResponse;
 

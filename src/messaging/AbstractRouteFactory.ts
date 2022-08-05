@@ -16,9 +16,10 @@ export abstract class AbstractRouteFactory<T extends BackgroundTarget | ContentT
 			throw new Error(`Message payload:args illegal.`);
 		}
 
-		if (!message.source.location) {
-			throw new Error(`Message source:location no specified.`);
+		if (!message.from) {
+			throw new Error(`Message from no specified.`);
 		}
+
 		return true;
 	}
 

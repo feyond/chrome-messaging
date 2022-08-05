@@ -30,7 +30,7 @@ function useRoute<IRoute, Target extends BackgroundTarget | ContentTarget>(targe
 							reject(response.message);
 						}
 					};
-					const request: ChromeRequest<Target> = { payload: { fn, args }, target, source: { location: Location.Background } };
+					const request: ChromeRequest<Target> = { payload: { fn, args }, target, from: getLocation(), tabId: chrome.devtools.inspectedWindow.tabId };
 					sendRequest(request, callback);
 				});
 		},
@@ -50,4 +50,20 @@ export function useTab(defaultTabId?: number) {
 					resolve(tab.id);
 			  });
 	});
+}
+
+export function getLocation(): Location {
+	if (chrome.background) {
+		return Location.Background;
+	}
+
+	if (chrome.content) {
+		return Location.Content;
+	}
+
+	if (chrome.devtools.inspectedWindow.tabId) {
+		return Location.Devtools;
+	}
+
+	throw new Error("Could not retrieve location.");
 }
