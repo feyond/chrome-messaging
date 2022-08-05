@@ -1,2 +1,3 @@
-export * from "./add"
-export * from "./subtract"
+export * from "./background";
+export * from "./content";
+export * from "./messaging";
