@@ -1,8 +1,12 @@
 import { MessageRouter } from "../messaging";
 import { BackgroundRouteFactory, UserBackgroundTargets } from "./BackgroundRouteFactory";
+import {IBGContent} from "../types";
+import {BGContentRoute} from "./BGContentRoute";
 
-class BackgroundContext {
+export class BackgroundContext {
 	router?: MessageRouter<BackgroundTarget>;
+	content: IBGContent = new BGContentRoute();
+
 }
 
 export const background = new BackgroundContext();

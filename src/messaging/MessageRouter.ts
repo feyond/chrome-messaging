@@ -9,6 +9,7 @@ export class MessageRouter<T extends BackgroundTarget | ContentTarget> {
 				// 	`${!!chrome.background ? "background" : "content"} message:`,
 				// 	message
 				// );
+				// TODO: log print
 				const _message = this.transform(message, sender);
 				if (this.match(_message)) {
 					this.apply(_message, sender)

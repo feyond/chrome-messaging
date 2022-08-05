@@ -1,3 +1,8 @@
+export type PromiseConverter<T> = T extends Promise<any> ? T : Promise<T>;
+
+export type PromiseFunctionReturnConverter<T> = {
+	[fn in keyof T]: T[fn] extends (...args: any[]) => any ? (...args: Parameters<T[fn]>) => PromiseConverter<ReturnType<T[fn]>> : T[fn];
+};
 export enum Location {
 	Background,
 	Content,
