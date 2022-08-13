@@ -21,7 +21,12 @@
   },
   "scripts": {
     "build": "vite build --mode development && npm run build:types",
-    "build:types": "tsc --noEmit false --declaration --emitDeclarationOnly --declarationDir ./lib"
+    "build:types": "tsc --noEmit false --declaration --emitDeclarationOnly --declarationDir ./lib",
+    "prepublish": "npm run build",
+    "postpublish": "rm -rf ./lib",
+    "test": "jest",
+    "lint": "eslint --ext .ts",
+    "lint:fix": "eslint --fix --ext .ts"
   },
   "author": "feyond",
   "homepage": "https://github.com/feyond/chrome-messaging",
