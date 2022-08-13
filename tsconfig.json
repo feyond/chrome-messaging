@@ -2,28 +2,30 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "allowJs": false,
     "declaration": false,
-    "removeComments": true,
     "strict": true,
-    "moduleResolution": "node",
-    "baseUrl": "./src",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "moduleResolution": "Node",
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "resolveJsonModule": true,
+    "sourceMap": false,
     "skipLibCheck": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "typeRoots": ["./node_modules/@types", "./@typings"],
+    "baseUrl": "./src",
+    "paths": {
+      "@core": ["core/index.ts"],
+      "@client": ["client/index.ts"],
+      "@background": ["background/index.ts"],
+      "@content": ["content/index.ts"],
+    }
   },
-  "include": [
-    "src"
-  ],
   "exclude": [
     "node_modules",
-    "test",
-    "dist",
+    "__tests__",
     "lib",
-    "esm",
-    "cjs",
-    "ums",
-    "index.d.ts",
-    "typings"
   ]
 }

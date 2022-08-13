@@ -11,10 +11,6 @@
         "sourceType": "module"
     },
     "rules": {
-        "indent": [
-            "error",
-            "tab"
-        ],
         "linebreak-style": [
             "error",
             "unix"
@@ -32,11 +28,15 @@
             "error",
             "interface"
         ],
+        "@typescript-eslint/no-namespace": "warn",
+        "@typescript-eslint/no-empty-interface": "warn",
         "no-console": 2
     },
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended"
-    ]
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended"
+    ],
+    "ignorePatterns": ["packages/*/lib/", "node_modules", "coverage", "scripts"]
 }

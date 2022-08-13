@@ -1,8 +1,6 @@
-/.idea/
-/node_modules/
-/lib/
-/dist/
-/esm/
-/cjs/
-.DS_Store
-package-lock.json
+node_modules/
+lerna-debug.log
+npm-debug.log
+packages/*/lib
+.idea
+coverage/

@@ -1,11 +1,12 @@
-import { ContentTargets } from "../types";
 import { CTDocumentRoute } from "./CTDocumentRoute";
-import { AbstractRouteFactory } from "../messaging";
+import { AbstractRouteFactory, ContentRouteGenerators, ContentTarget } from "@core";
 
-export type UserContentTargets = Omit<ContentTargets, "document">;
+export type UserContentRouteGenerators = Omit<ContentRouteGenerators, "document">;
+
 export class ContentRouteFactory extends AbstractRouteFactory<ContentTarget> {
-	targets: ContentTargets;
-	constructor(_targets: UserContentTargets) {
+	targets: ContentRouteGenerators;
+
+	constructor(_targets: UserContentRouteGenerators) {
 		super();
 		this.targets = {
 			..._targets,

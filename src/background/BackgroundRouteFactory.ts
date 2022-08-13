@@ -1,15 +1,15 @@
-import { BackgroundTargets } from "../types";
-import { AbstractRouteFactory } from "../messaging";
-import { BGContentRoute } from "./BGContentRoute";
+import { AbstractRouteFactory, BackgroundRouteGenerators, BackgroundTarget, IBGContent } from "@core";
 
-export type UserBackgroundTargets = Omit<BackgroundTargets, "content">;
+export type UserBackgroundRouteGenerators = Omit<BackgroundRouteGenerators, "content">;
+
 export class BackgroundRouteFactory extends AbstractRouteFactory<BackgroundTarget> {
-	targets: BackgroundTargets;
-	constructor(_targets: UserBackgroundTargets) {
+	targets: BackgroundRouteGenerators;
+
+	constructor(content: IBGContent, _targets: UserBackgroundRouteGenerators) {
 		super();
 		this.targets = {
 			..._targets,
-			content: () => new BGContentRoute(),
+			content,
 		};
 	}
 }
