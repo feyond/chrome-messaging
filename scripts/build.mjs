@@ -20,7 +20,7 @@ const contentDir = path.resolve(srcDir, "content");
 entries
     .filter((value) => !args.p || args.p === value)
     .forEach(async (value, index) => {
-        console.log(`\n===> running: vite build ${value}`);
+        console.log(`\n===> running: vite build ${value}`, index);
         const entry = value === "index" ? path.resolve(srcDir, "index.ts") : path.resolve(srcDir, value, "index.ts");
         const outDir = value === "index" ? path.resolve(rootDir, "lib") : path.resolve(rootDir, "lib", value);
         await build({
@@ -38,7 +38,7 @@ entries
                 emptyOutDir: index === 0,
                 lib: {
                     entry: entry,
-                    formats: ["umd", "es"],
+                    formats: ["cjs", "es"],
                     name: `${process.env.npm_package_name}-${value}`
                         .replace(/^@.*\//, "")
                         .replaceAll(".", "_")
