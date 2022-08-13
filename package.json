@@ -2,9 +2,9 @@
   "name": "@feyond/chrome-messaging",
   "version": "0.0.1",
   "description": "Chrome Extension Messaging Wrapper Library",
-  "main": "lib/client/index.umd.js",
-  "module": "lib/client/index.es.js",
-  "types": "lib/client/index.d.ts",
+  "main": "lib/index.umd.js",
+  "module": "lib/index.es.js",
+  "types": "lib/index.d.ts",
   "type": "module",
   "directories": {
     "lib": "lib",
@@ -14,22 +14,47 @@
     "lib"
   ],
   "exports": {
-    "./core": {
+    "default": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.es.js",
+      "require": "./lib/index.umd.js"
+    },
+    "core": {
       "types": "./lib/core/index.d.ts",
       "import": "./lib/core/index.es.js",
       "require": "./lib/core/index.umd.js"
     },
-    "./client": {
+    "client": {
       "types": "./lib/client/index.d.ts",
       "import": "./lib/client/index.es.js",
       "require": "./lib/client/index.umd.js"
     },
-    "./background": {
+    "background": {
       "types": "./lib/background/index.d.ts",
       "import": "./lib/background/index.es.js",
       "require": "./lib/background/index.umd.js"
     },
-    "./content": {
+    "content": {
+      "types": "./lib/content/index.d.ts",
+      "import": "./lib/content/index.es.js",
+      "require": "./lib/content/index.umd.js"
+    },
+    "@core": {
+      "types": "./lib/core/index.d.ts",
+      "import": "./lib/core/index.es.js",
+      "require": "./lib/core/index.umd.js"
+    },
+    "@client": {
+      "types": "./lib/client/index.d.ts",
+      "import": "./lib/client/index.es.js",
+      "require": "./lib/client/index.umd.js"
+    },
+    "@background": {
+      "types": "./lib/background/index.d.ts",
+      "import": "./lib/background/index.es.js",
+      "require": "./lib/background/index.umd.js"
+    },
+    "@content": {
       "types": "./lib/content/index.d.ts",
       "import": "./lib/content/index.es.js",
       "require": "./lib/content/index.umd.js"
@@ -40,7 +65,7 @@
     "build:core": "npm run build -p core",
     "build:client": "npm run build -p client",
     "build1": "vite build --mode development && npm run build:types",
-    "build:types": "tsc -p ./tsconfig.json --noEmit false --declaration --emitDeclarationOnly --declarationDir ./lib",
+    "build:types": "tsc -p ./tsconfig.json --noEmit false --declaration --emitDeclarationOnly --declarationDir ./dist",
     "prepublish": "npm run build",
     "postpublish": "rm -rf ./lib",
     "test": "jest",
@@ -62,6 +87,10 @@
   "repository": {
     "url": "https://github.com/feyond/chrome-messaging.git",
     "type": "git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "peerDependencies": {
     "@feyond/console-logging": "^1.1.4"
