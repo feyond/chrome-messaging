@@ -45,8 +45,10 @@ entries
                         .replaceAll("-", "_"), fileName: (format) => `index.${format}.js`,
                 },
                 rollupOptions: {
-                    external: ["@feyond/console-logging", "@core", "@client", "@content", "@background"],
+                    external: ["@feyond/console-logging"],
+                    preserveEntrySignatures: "strict",
                     output: {
+                        preserveModules: true,
                         globals: {
                             "@feyond/console-logging": "console_logging"
                         }
