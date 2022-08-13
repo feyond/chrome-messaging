@@ -1,7 +1,8 @@
 import { getLogger } from "@feyond/console-logging";
-import { BackgroundTarget, ChromeTarget, ContentTarget, IBGContent } from "./route";
+import { BackgroundTarget, ChromeTarget, ContentTarget } from "./route";
 import { ChromeLocation, ChromeRequest, ChromeResponse } from "./types";
 import { RouteFactory } from "./RouteFactory";
+import { IBGContent } from "@client";
 
 const log = getLogger({ module: "chrome-messaging" });
 

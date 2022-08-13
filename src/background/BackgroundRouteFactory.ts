@@ -1,4 +1,5 @@
-import { AbstractRouteFactory, BackgroundRouteGenerators, BackgroundTarget, IBGContent } from "@core";
+import { AbstractRouteFactory, BackgroundRouteGenerators, BackgroundTarget } from "@core";
+import { IBGContent } from "@client";
 
 export type UserBackgroundRouteGenerators = Omit<BackgroundRouteGenerators, "content">;
 

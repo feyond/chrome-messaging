@@ -38,5 +38,5 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:prettier/recommended"
     ],
-    "ignorePatterns": ["packages/*/lib/", "node_modules", "coverage", "scripts"]
+    "ignorePatterns": ["lib", "node_modules", "coverage"]
 }

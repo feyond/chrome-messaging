@@ -17,15 +17,16 @@
     "typeRoots": ["./node_modules/@types", "./@typings"],
     "baseUrl": "./src",
     "paths": {
-      "@core": ["core/index.ts"],
-      "@client": ["client/index.ts"],
-      "@background": ["background/index.ts"],
-      "@content": ["content/index.ts"],
+      "core": ["core/index.ts"],
+      "client": ["client/index.ts"],
+      "background": ["background/index.ts"],
+      "content": ["content/index.ts"]
     }
   },
+  "include": ["src"],
   "exclude": [
     "node_modules",
     "__tests__",
-    "lib",
+    "lib"
   ]
 }
