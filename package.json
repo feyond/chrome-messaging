@@ -1,6 +1,6 @@
 {
   "name": "@feyond/chrome-messaging",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Chrome Extension Messaging Wrapper Library",
   "type": "module",
   "main": "lib/index.cjs.js",
