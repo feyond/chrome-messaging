@@ -33,10 +33,7 @@ export default ({ mode }: ConfigEnv) => {
 			},
 			rollupOptions: {
 				external: ["@feyond/console-logging"],
-				preserveEntrySignatures: "exports-only",
 				output: {
-					inlineDynamicImports: false,
-					preserveModules: true,
 					globals: {
 						"@feyond/console-logging": "console_logging",
 					},

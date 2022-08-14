@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext",
+    "module": "CommonJS",
     "declaration": false,
     "strict": true,
     "noImplicitAny": true,
@@ -21,6 +21,11 @@
       "@client": ["client/index.ts"],
       "@background": ["background/index.ts"],
       "@content": ["content/index.ts"]
+    }
+  },
+  "ts-node": {
+    "moduleTypes": {
+      "jest.config.ts": "cjs"
     }
   },
   "include": ["src"],

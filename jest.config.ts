@@ -1,14 +1,12 @@
-// import client from "./packages/chrome-messaging-client/package.json";
 import path from "path";
-// import background from "./packages/chrome-messaging-background/package.json";
-// const clear = (name: string) => name.replace(/@.*\//, "");
+
 export default {
 	collectCoverage: true,
 	coverageDirectory: path.resolve(__dirname, "coverage"),
-	collectCoverageFrom: ["**/src/**"],
-	testMatch: ["<rootDir>/packages/*/__tests__/*.test.ts"],
+	collectCoverageFrom: ["src/**"],
+	testMatch: ["<rootDir>/__tests__/*.test.ts"],
 	moduleDirectories: ["node_modules"],
-	testPathIgnorePatterns: ["/node_modules/"],
+	testPathIgnorePatterns: ["/node_modules/", "/.d.ts$/"],
 	moduleFileExtensions: ["js", "ts", "json"],
 	coverageThreshold: {
 		global: {
@@ -23,6 +21,12 @@ export default {
 	testEnvironment: "jsdom",
 	verbose: true,
 	preset: "ts-jest",
+	moduleNameMapper: {
+		"^@core": "<rootDir>/src/core",
+		"^@client": "<rootDir>/src/client",
+		"^@background": "<rootDir>/src/background",
+		"^@content": "<rootDir>/src/content",
+	},
 	// projects: [
 	// 	{
 	// 		preset: "ts-jest",
