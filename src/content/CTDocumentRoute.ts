@@ -3,6 +3,6 @@ import { ICTDocument } from "@client";
 
 export class CTDocumentRoute extends Route<ContentTarget> implements ICTDocument {
 	click() {
-		document.dispatchEvent(new CustomEvent(""));
+		// document.dispatchEvent(new CustomEvent(""));
 	}
 }

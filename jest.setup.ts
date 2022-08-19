@@ -8,8 +8,16 @@ declare global {
 	interface BackgroundTargetRoutes {
 		iTest: IBGTest;
 	}
+
+	interface ContentTargetRoutes {
+		cTest: ICTTest;
+	}
 }
 
 export interface IBGTest {
 	add(x: number, y: number): number;
+}
+
+export interface ICTTest {
+	findEle(selector: string): any;
 }

@@ -1,21 +1,6 @@
 import { chrome } from "jest-chrome";
-import { setDefaultLevel } from "@feyond/console-logging";
 import { getLocation, useBackground } from "@client";
 import { BackgroundTarget, ChromeLocation, ChromeRequest, ChromeResponse } from "@core";
-
-declare global {
-	interface BackgroundTargetRoutes {
-		iTest: ITest;
-	}
-}
-
-interface ITest {
-	add(x: number, y: number): number;
-}
-
-beforeEach(() => {
-	setDefaultLevel("debug");
-});
 
 describe("@feyond/chrome-messaging-client", () => {
 	const route = useBackground("iTest");
