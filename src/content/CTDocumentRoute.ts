@@ -1,7 +1,7 @@
-import { AbstractRoute, ContentTarget } from "@core";
+import { Route, ContentTarget } from "@core";
 import { ICTDocument } from "@client";
 
-export class CTDocumentRoute extends AbstractRoute<ContentTarget> implements ICTDocument {
+export class CTDocumentRoute extends Route<ContentTarget> implements ICTDocument {
 	click() {
 		document.dispatchEvent(new CustomEvent(""));
 	}

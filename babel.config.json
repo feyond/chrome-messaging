@@ -1,0 +1,29 @@
+{
+  "comments": false,
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "bugfixes": true,
+        "useBuiltIns": "usage",
+        "corejs": 3
+      }
+    ],
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    [
+      "module-resolver",
+      {
+        "root": ["./src"],
+        "alias": {
+          "@core": "./src/core",
+          "@client": ["./src/client"],
+          "@background": ["./src/background"],
+          "@content": ["./src/content"]
+        }
+      }
+    ]
+  ]
+}

@@ -2,9 +2,8 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "CommonJS",
-    "declaration": false,
+    "declaration": true,
     "strict": true,
-    "noImplicitAny": true,
     "removeComments": true,
     "moduleResolution": "Node",
     "esModuleInterop": true,
@@ -13,25 +12,25 @@
     "sourceMap": false,
     "skipLibCheck": true,
     "noEmit": true,
-    "isolatedModules": true,
     "typeRoots": ["./node_modules/@types", "./@typings"],
     "baseUrl": "./src",
     "paths": {
       "@core": ["core/index.ts"],
+      "@core/*": ["core/*"],
       "@client": ["client/index.ts"],
+      "@client/*": ["client/*"],
       "@background": ["background/index.ts"],
-      "@content": ["content/index.ts"]
-    }
+      "@background/*": ["background/*"],
+      "@content": ["content/index.ts"],
+      "@content/*": ["content/*"]
+    },
+    "plugins": [
+      { "transform": "typescript-transform-paths" },
+      { "transform": "typescript-transform-paths", "afterDeclarations": true }
+    ]
   },
-  "ts-node": {
-    "moduleTypes": {
-      "jest.config.ts": "cjs"
-    }
-  },
-  "include": ["src"],
   "exclude": [
     "node_modules",
-    "__tests__",
     "lib"
   ]
 }

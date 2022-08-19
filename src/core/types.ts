@@ -1,9 +1,7 @@
-import { ChromeTarget } from "./Route";
-
 export type PromiseConverter<T> = T extends Promise<unknown> ? T : Promise<T>;
 
 export type PromiseFunctionReturnConverter<T> = {
-	[fn in keyof T]: T[fn] extends (...args: unknown[]) => unknown ? (...args: Parameters<T[fn]>) => PromiseConverter<ReturnType<T[fn]>> : T[fn];
+	[fn in keyof T]: T[fn] extends (...args: any[]) => any ? (...args: Parameters<T[fn]>) => PromiseConverter<ReturnType<T[fn]>> : T[fn];
 };
 
 export enum ChromeLocation {
@@ -24,7 +22,7 @@ export interface Payload {
 export interface ChromeRequest<T extends ChromeTarget> {
 	payload: Payload;
 	from: ChromeLocation;
-	tabId: number;
+	tabId?: number;
 	target: T;
 }
 
@@ -39,3 +37,7 @@ export interface ErrorResponse {
 	status: false;
 	message: string;
 }
+
+export type BackgroundTarget = keyof BackgroundTargetRoutes;
+export type ContentTarget = keyof ContentTargetRoutes;
+export type ChromeTarget = BackgroundTarget | ContentTarget;

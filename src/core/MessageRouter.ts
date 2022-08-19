@@ -1,10 +1,13 @@
-import { getLogger } from "@feyond/console-logging";
-import { BackgroundTarget, ChromeTarget, ContentTarget } from "./route";
-import { ChromeLocation, ChromeRequest, ChromeResponse } from "./types";
+import { BackgroundTarget, ChromeLocation, ChromeRequest, ChromeResponse, ChromeTarget, ContentTarget } from "./types";
 import { RouteFactory } from "./RouteFactory";
 import { IBGContent } from "@client";
+import { createLogger } from "@feyond/console-logging";
 
-const log = getLogger({ module: "chrome-messaging" });
+const log = createLogger({ label: "chrome-messaging" });
+
+export abstract class Route<T extends ChromeTarget> {
+	constructor(public context: ChromeRequest<T>, public readonly sender?: chrome.runtime.MessageSender) {}
+}
 
 export class MessageRouter<T extends ChromeTarget> {
 	constructor(public factory: RouteFactory<T>) {}
@@ -18,7 +21,7 @@ export class MessageRouter<T extends ChromeTarget> {
 					sendResponse({ status: true, data: value });
 				})
 				.catch((reason) => {
-					log.error("", reason);
+					log.error(reason);
 					sendResponse({
 						status: false,
 						message: reason instanceof Error ? reason.message : reason,
@@ -47,7 +50,7 @@ export class MessageRouter<T extends ChromeTarget> {
 	}
 
 	apply(message: ChromeRequest<T>, sender?: chrome.runtime.MessageSender) {
-		return new Promise<unknown>((resolve) => {
+		return new Promise<unknown>((resolve, reject) => {
 			this.factory.validate(message);
 			const route = this.getRoute(message, sender);
 			const { fn, args } = message.payload;
@@ -58,13 +61,13 @@ export class MessageRouter<T extends ChromeTarget> {
 			//TODO 校验 method入参类型 与 args 是否一致
 			const result = Reflect.apply(method, route, args);
 			log.debug("chrome message apply result:", result);
-			return result instanceof Promise ? result.then(resolve) : resolve(result);
+			return result instanceof Promise ? result.then(resolve).catch(reject) : resolve(result);
 		});
 	}
 
 	transform(message: ChromeRequest<T>, sender: chrome.runtime.MessageSender): ChromeRequest<T> {
 		if (message.from === ChromeLocation.Content) {
-			if (!sender.tab || !sender.tab.id) throw new Error("Could not retrieve tab:id");
+			if (!sender?.tab?.id) throw new Error("Could not retrieve tab:id");
 			return {
 				...message,
 				tabId: sender.tab.id,
@@ -78,11 +81,13 @@ declare global {
 	export interface IBackgroundContext {
 		router?: MessageRouter<BackgroundTarget>;
 		content: IBGContent;
+
 		callMessage(request: ChromeRequest<BackgroundTarget>, callback: (response: ChromeResponse) => void): void;
 	}
 
 	export interface IContentContext {
 		router?: MessageRouter<ContentTarget>;
+
 		callMessage(request: ChromeRequest<ContentTarget>, callback: (response: ChromeResponse) => void): void;
 	}
 }
