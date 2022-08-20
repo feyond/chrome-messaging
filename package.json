@@ -2,14 +2,33 @@
   "name": "@feyond/chrome-messaging",
   "version": "0.0.3",
   "description": "Chrome Extension Messaging Wrapper Library",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/core/index.js",
+  "types": "lib/core/index.d.ts",
+  "exports": {
+    ".": "./lib/core/index.js",
+    "./client": "./lib/client/index.js",
+    "./background": "./lib/client/index.js",
+    "./content": "./lib/client/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "client": [
+        "lib/client/index.d.ts"
+      ],
+      "background": [
+        "lib/background/index.d.ts"
+      ],
+      "content": [
+        "lib/content/index.d.ts"
+      ]
+    }
+  },
   "files": [
     "lib"
   ],
   "scripts": {
     "build": "rimraf ./lib && npm run build:types && npm run build:js",
-    "build:js": "babel src --out-dir ./lib --ignore \"src/*.d.ts\" --extensions \".ts\"",
+    "build:js": "babel src --out-dir ./lib --ignore \"src/*.d.ts\" --copy-files --extensions \".ts\"",
     "build:types": "tsc -p tsconfig.prod.json --noEmit false --declaration --emitDeclarationOnly --declarationDir ./lib",
     "prepublish": "npm run test && npm run build",
     "postpublish": "rimraf ./lib",

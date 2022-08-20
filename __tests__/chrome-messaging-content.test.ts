@@ -6,7 +6,7 @@ import { content, onContentMessage } from "@content";
 beforeAll(() => {
 	onContentMessage({
 		cTest: new (class implements ICTTest {
-			findEle(selector: string): any {
+			findEle(selector: string) {
 				return `ELE: ${selector}`;
 			}
 		})(),

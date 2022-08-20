@@ -5,7 +5,7 @@ export default {
 	coverageDirectory: path.resolve(__dirname, "coverage"),
 	collectCoverageFrom: ["src/**"],
 	testMatch: ["<rootDir>/__tests__/*.test.ts"],
-	testPathIgnorePatterns: ["/*.d.ts/"],
+	testPathIgnorePatterns: ["/*.d.ts/", "/node_modules/"],
 	moduleDirectories: ["node_modules", "src"],
 	roots: ["<rootDir>"],
 	setupFilesAfterEnv: ["./jest.setup.ts"],

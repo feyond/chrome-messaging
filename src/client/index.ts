@@ -30,7 +30,18 @@ export function useContent<T extends ContentTarget>(
 			if (chrome.content) {
 				return chrome.content.callMessage(request, callback);
 			}
-			useTab(tabId).then((_tabId) => contentRoute.forward(_tabId, request).then(callback));
+			useTab(tabId).then((_tabId) =>
+				contentRoute
+					.forward(_tabId, request)
+					.then(callback)
+					.catch((reason) => {
+						log.error("forward error", reason);
+						callback({
+							status: false,
+							message: reason,
+						});
+					})
+			);
 		},
 		location
 	);
@@ -40,24 +51,25 @@ function useRoute<IRoute, Target extends BackgroundTarget | ContentTarget>(targe
 	const proxy = {} as PromiseFunctionReturnConverter<IRoute>;
 	return new Proxy(proxy, {
 		get(_, fn: string) {
-			return (...args: unknown[]) =>
-				new Promise((resolve, reject) => {
-					const callback = (response: ChromeResponse) => {
-						if (response.status) {
-							resolve(response.data);
-						} else {
-							reject(response.message);
-						}
-					};
+			return (...args: unknown[]) => {
+				return new Promise((resolve, reject) => {
 					const request: ChromeRequest<Target> = {
 						payload: { fn, args },
 						target,
 						from: getLocation(location),
 						tabId: chrome.devtools?.inspectedWindow?.tabId,
 					};
-					log.debug("chrome request.", request);
-					sendRequest(request, callback);
+					log.verbose("chrome request.", request);
+					sendRequest(request, (response: ChromeResponse) => {
+						log.debug("chrome response:", response);
+						if (response.status) {
+							resolve(response.data);
+						} else {
+							reject(response.message);
+						}
+					});
 				});
+			};
 		},
 	});
 }
@@ -70,7 +82,7 @@ export function useTab(defaultTabId?: number) {
 			? resolve(chrome.devtools.inspectedWindow.tabId)
 			: chrome.tabs.getCurrent().then((tab) => {
 					if (!tab || !tab.id) {
-						return reject("Could not retrieve tab id");
+						return reject("Could not retrieve current tab id");
 					}
 					resolve(tab.id);
 			  });
@@ -90,7 +102,7 @@ export function getLocation(location?: ChromeLocation) {
 		return ChromeLocation.Devtools;
 	}
 
-	if (!location) throw new Error("From Location not specified");
+	if (!location) throw new Error("Location not specified.");
 
 	return location;
 }

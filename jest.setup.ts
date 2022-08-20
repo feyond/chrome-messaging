@@ -19,5 +19,5 @@ export interface IBGTest {
 }
 
 export interface ICTTest {
-	findEle(selector: string): any;
+	findEle(selector: string): string;
 }
