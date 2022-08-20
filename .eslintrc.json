@@ -30,7 +30,7 @@
         ],
         "@typescript-eslint/no-namespace": "warn",
         "@typescript-eslint/no-empty-interface": "warn",
-        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-explicit-any": "error",
         "no-console": 2
     },
     "extends": [
@@ -39,5 +39,5 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:prettier/recommended"
     ],
-    "ignorePatterns": ["lib", "node_modules", "coverage"]
+    "ignorePatterns": ["lib", "node_modules", "coverage", "__tests__"]
 }

@@ -1,6 +1,7 @@
 export type PromiseConverter<T> = T extends Promise<unknown> ? T : Promise<T>;
 
 export type PromiseFunctionReturnConverter<T> = {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	[fn in keyof T]: T[fn] extends (...args: any[]) => any ? (...args: Parameters<T[fn]>) => PromiseConverter<ReturnType<T[fn]>> : T[fn];
 };
 
