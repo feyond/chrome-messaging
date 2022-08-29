@@ -59,7 +59,6 @@ export class MessageRouter<T extends ChromeTarget> {
 			const method = Reflect.get(route, fn);
 			//TODO 校验 method入参类型 与 args 是否一致
 			const result = Reflect.apply(method, route, args);
-			debug("apply result: %O", result);
 			return result instanceof Promise ? result.then(resolve).catch(reject) : resolve(result);
 		});
 	}
