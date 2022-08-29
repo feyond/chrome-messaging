@@ -40,7 +40,7 @@ export abstract class AbstractRouteFactory<T extends ChromeTarget> implements Ro
 		}
 
 		if (message.from === ChromeLocation.Devtools || message.from === ChromeLocation.Content) {
-			if (!message.tabId && !chrome.content) {
+			if (!message.tabId && !Reflect.has(chrome, "content")) {
 				throw new Error("Could not retrieve tabId");
 			}
 		}
