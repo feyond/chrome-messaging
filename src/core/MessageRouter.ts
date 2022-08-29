@@ -1,10 +1,9 @@
-import { BackgroundTarget, ChromeLocation, ChromeRequest, ChromeResponse, ChromeTarget, ContentTarget } from "./types";
+import { ChromeLocation, ChromeRequest, ChromeResponse, ChromeTarget } from "./types";
 import { RouteFactory } from "./RouteFactory";
-import { IBGContent } from "@client";
-import { createLogger } from "@feyond/console-logging";
+import { _debug, _error } from "@core/helpers";
 
-const log = createLogger({ label: "chrome-messaging" });
-
+const debug = _debug("core");
+const error = _error("core");
 export abstract class Route<T extends ChromeTarget> {
 	constructor(public context: ChromeRequest<T>, public readonly sender?: chrome.runtime.MessageSender) {}
 }
@@ -14,14 +13,14 @@ export class MessageRouter<T extends ChromeTarget> {
 
 	callMessage(message: ChromeRequest<T>, sendResponse: (response: ChromeResponse) => void, sender?: chrome.runtime.MessageSender) {
 		if (this.match(message)) {
-			log.debug("chrome message is matched", message);
+			debug("message is matched %O", message);
 			this.apply(message, sender)
 				.then((value) => {
-					log.debug("chrome message response", value);
+					debug("message response %O", value);
 					sendResponse({ status: true, data: value });
 				})
 				.catch((reason) => {
-					log.error(reason);
+					error("catch", reason);
 					sendResponse({
 						status: false,
 						message: reason instanceof Error ? reason.message : reason,
@@ -29,7 +28,7 @@ export class MessageRouter<T extends ChromeTarget> {
 				});
 			return true;
 		}
-		log.debug("chrome message mismatch", message);
+		debug("message mismatch %O", message);
 	}
 
 	onMessage() {
@@ -60,7 +59,7 @@ export class MessageRouter<T extends ChromeTarget> {
 			const method = Reflect.get(route, fn);
 			//TODO 校验 method入参类型 与 args 是否一致
 			const result = Reflect.apply(method, route, args);
-			log.debug("chrome message apply result:", result);
+			debug("apply result: %O", result);
 			return result instanceof Promise ? result.then(resolve).catch(reject) : resolve(result);
 		});
 	}
@@ -74,20 +73,5 @@ export class MessageRouter<T extends ChromeTarget> {
 			};
 		}
 		return message;
-	}
-}
-
-declare global {
-	export interface IBackgroundContext {
-		router?: MessageRouter<BackgroundTarget>;
-		content: IBGContent;
-
-		callMessage(request: ChromeRequest<BackgroundTarget>, callback: (response: ChromeResponse) => void): void;
-	}
-
-	export interface IContentContext {
-		router?: MessageRouter<ContentTarget>;
-
-		callMessage(request: ChromeRequest<ContentTarget>, callback: (response: ChromeResponse) => void): void;
 	}
 }

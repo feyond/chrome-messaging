@@ -1,3 +1,6 @@
+import { IBGContent } from "@client";
+import { MessageRouter } from "@core/MessageRouter";
+
 export type PromiseConverter<T> = T extends Promise<unknown> ? T : Promise<T>;
 
 export type PromiseFunctionReturnConverter<T> = {
@@ -42,3 +45,14 @@ export interface ErrorResponse {
 export type BackgroundTarget = keyof BackgroundTargetRoutes;
 export type ContentTarget = keyof ContentTargetRoutes;
 export type ChromeTarget = BackgroundTarget | ContentTarget;
+
+export interface IBackgroundContext {
+	router?: MessageRouter<BackgroundTarget>;
+	content: IBGContent;
+	callMessage(request: ChromeRequest<BackgroundTarget>, callback: (response: ChromeResponse) => void): void;
+}
+
+export interface IContentContext {
+	router?: MessageRouter<ContentTarget>;
+	callMessage(request: ChromeRequest<ContentTarget>, callback: (response: ChromeResponse) => void): void;
+}

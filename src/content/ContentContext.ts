@@ -1,5 +1,5 @@
 import { ContentRouteFactory, UserContentRouteGenerators } from "./ContentRouteFactory";
-import { ChromeRequest, ChromeResponse, ContentTarget, MessageRouter } from "@core";
+import { ChromeRequest, ChromeResponse, ContentTarget, IContentContext, MessageRouter } from "@core";
 
 export class ContentContext implements IContentContext {
 	router?: MessageRouter<ContentTarget>;
@@ -16,4 +16,4 @@ export function onContentMessage(_targets: UserContentRouteGenerators) {
 	content.router.onMessage();
 }
 
-chrome.content = new ContentContext();
+Reflect.set(chrome, "content", content);

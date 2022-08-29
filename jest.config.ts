@@ -16,7 +16,7 @@ export default {
 		"^@client": "<rootDir>/src/client",
 		"^@background": "<rootDir>/src/background",
 		"^@content": "<rootDir>/src/content",
-		"^@feyond/console-logging/levels": "@feyond/console-logging/lib/levels",
+		// "^@feyond/console-logging/levels": "@feyond/console-logging/lib/levels",
 		// "^package-name/(.*)$": "package-name/lib/$1"
 	},
 };

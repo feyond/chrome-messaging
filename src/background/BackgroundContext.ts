@@ -1,6 +1,6 @@
 import { BackgroundRouteFactory, UserBackgroundRouteGenerators } from "./BackgroundRouteFactory";
 import { BGContentRoute } from "./BGContentRoute";
-import { BackgroundTarget, MessageRouter, ChromeRequest, ChromeResponse } from "@core";
+import { BackgroundTarget, MessageRouter, ChromeRequest, ChromeResponse, IBackgroundContext } from "@core";
 import { IBGContent } from "@client";
 
 class BackgroundContext implements IBackgroundContext {
@@ -19,4 +19,4 @@ export function onBackgroundMessage(_targets: UserBackgroundRouteGenerators) {
 	background.router.onMessage();
 }
 
-chrome.background = background;
+Reflect.set(chrome, "background", background);

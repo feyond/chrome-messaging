@@ -1,16 +1,28 @@
-import { BackgroundTarget, ChromeLocation, ChromeRequest, ChromeResponse, ChromeTarget, ContentTarget, PromiseFunctionReturnConverter } from "@core";
+import {
+	BackgroundTarget,
+	ChromeLocation,
+	ChromeRequest,
+	ChromeResponse,
+	ChromeTarget,
+	ContentTarget,
+	IBackgroundContext,
+	IContentContext,
+	PromiseFunctionReturnConverter,
+} from "@core";
 
-import { createLogger } from "@feyond/console-logging";
+import { _debug, _error } from "@core/helpers";
 
-const log = createLogger({ label: "chrome-messaging-client" });
+const debug = _debug("client");
+const error = _error("client");
 type MessagingHandler<T extends ChromeTarget> = (request: ChromeRequest<T>, callback: (response: ChromeResponse) => void) => void;
 
 export function useBackground<T extends BackgroundTarget>(target: T, from?: ChromeLocation): PromiseFunctionReturnConverter<BackgroundTargetRoutes[T]> {
 	return useRoute<BackgroundTargetRoutes[T], BackgroundTarget>(
 		target,
 		(request, callback) => {
-			if (chrome.background) {
-				return chrome.background.callMessage(request, callback);
+			if (Reflect.has(chrome, "background")) {
+				const background: IBackgroundContext = Reflect.get(chrome, "background");
+				return background.callMessage(request, callback);
 			}
 			chrome.runtime.sendMessage(request, callback);
 		},
@@ -23,19 +35,20 @@ export function useContent<T extends ContentTarget>(
 	tabId?: number,
 	location?: ChromeLocation
 ): PromiseFunctionReturnConverter<ContentTargetRoutes[T]> {
-	const contentRoute = !chrome.background ? useBackground("content") : chrome.background.content;
+	const contentRoute = Reflect.has(chrome, "background") ? (Reflect.get(chrome, "background") as IBackgroundContext).content : useBackground("content");
 	return useRoute<ContentTargetRoutes[T], ContentTarget>(
 		target,
 		(request, callback) => {
-			if (chrome.content) {
-				return chrome.content.callMessage(request, callback);
+			if (Reflect.has(chrome, "content")) {
+				const content: IContentContext = Reflect.get(chrome, "content");
+				return content.callMessage(request, callback);
 			}
 			useTab(tabId).then((_tabId) =>
 				contentRoute
 					.forward(_tabId, request)
 					.then(callback)
 					.catch((reason) => {
-						log.error("forward error", reason);
+						error("forward error", reason);
 						callback({
 							status: false,
 							message: reason,
@@ -59,9 +72,9 @@ function useRoute<IRoute, Target extends BackgroundTarget | ContentTarget>(targe
 						from: getLocation(location),
 						tabId: chrome.devtools?.inspectedWindow?.tabId,
 					};
-					log.verbose("chrome request.", request);
+					debug("chrome request. %O", request);
 					sendRequest(request, (response: ChromeResponse) => {
-						log.debug("chrome response:", response);
+						debug("chrome response: %O", response);
 						if (response.status) {
 							resolve(response.data);
 						} else {
@@ -90,11 +103,11 @@ export function useTab(defaultTabId?: number) {
 }
 
 export function getLocation(location?: ChromeLocation) {
-	if (chrome.background) {
+	if (Reflect.has(chrome, "background")) {
 		return ChromeLocation.Background;
 	}
 
-	if (chrome.content) {
+	if (Reflect.has(chrome, "content")) {
 		return ChromeLocation.Content;
 	}
 

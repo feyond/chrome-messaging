@@ -27,10 +27,10 @@
     "lib"
   ],
   "scripts": {
-    "build": "rimraf ./lib && npm run build:types && npm run build:js",
-    "build:js": "babel src --out-dir ./lib --ignore \"src/*.d.ts\" --copy-files --extensions \".ts\"",
-    "build:types": "tsc -p tsconfig.prod.json --noEmit false --declaration --emitDeclarationOnly --declarationDir ./lib",
-    "prepublish": "npm run test && npm run build",
+    "build": "rimraf ./lib && pnpm run build:types && pnpm run build:js",
+    "build:js": "babel src --out-dir ./lib --ignore \"src/chrome.d.ts\" --copy-files --extensions \".ts\"",
+    "build:types": "pnpm run prepare && tsc -p tsconfig.prod.json --noEmit false --declaration --emitDeclarationOnly --declarationDir ./lib",
+    "prepublish": "pnpm run test && npm run build",
     "postpublish": "rimraf ./lib",
     "test": "jest",
     "lint": "eslint --ext .ts",
@@ -59,19 +59,20 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.18.10",
-    "@babel/core": "^7.18.10",
+    "@babel/core": "^7.18.13",
     "@babel/plugin-transform-runtime": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
     "@babel/preset-typescript": "^7.18.6",
     "@babel/register": "^7.18.9",
-    "@types/chrome": "^0.0.193",
+    "@types/chrome": "^0.0.195",
+    "@types/debug": "^4.1.7",
     "@types/jest": "^27.5.2",
-    "@types/node": "^18.7.6",
-    "@typescript-eslint/eslint-plugin": "^5.32.0",
-    "@typescript-eslint/parser": "^5.32.0",
+    "@types/node": "^18.7.13",
+    "@typescript-eslint/eslint-plugin": "^5.35.1",
+    "@typescript-eslint/parser": "^5.35.1",
     "babel-jest": "^27.5.1",
     "babel-plugin-module-resolver": "^4.1.0",
-    "eslint": "^8.21.0",
+    "eslint": "8.22.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "jest": "^27.5.1",
@@ -80,12 +81,12 @@
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1",
     "ts-patch": "^2.0.2",
-    "typescript": "^4.7.4",
+    "typescript": "^4.8.2",
     "typescript-transform-paths": "^3.3.1"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.9",
-    "@feyond/console-logging": "^1.2.3",
-    "core-js": "^3.24.1"
+    "core-js": "^3.25.0",
+    "debug": "^4.3.4"
   }
 }
