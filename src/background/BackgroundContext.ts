@@ -12,11 +12,10 @@ class BackgroundContext implements IBackgroundContext {
 	}
 }
 
-export const background = new BackgroundContext();
+const background = new BackgroundContext();
 
 export function onBackgroundMessage(_targets: UserBackgroundRouteGenerators) {
+	Reflect.set(chrome, "background", background);
 	background.router = new MessageRouter(new BackgroundRouteFactory(background.content, _targets));
 	background.router.onMessage();
 }
-
-Reflect.set(chrome, "background", background);

@@ -9,11 +9,10 @@ export class ContentContext implements IContentContext {
 	}
 }
 
-export const content = new ContentContext();
+const content = new ContentContext();
 
 export function onContentMessage(_targets: UserContentRouteGenerators) {
+	Reflect.set(chrome, "content", content);
 	content.router = new MessageRouter(new ContentRouteFactory(_targets));
 	content.router.onMessage();
 }
-
-Reflect.set(chrome, "content", content);
